@@ -1,0 +1,25 @@
+<div class="animate-fade-in" id="home-component">
+	<p class="text-right mb-4">Jogadores online: <%= @player_count %></p>
+	<div class="text-center">
+		<h1 class="text-2xl mb-2 font-bold">Jogue o famoso jogo de batalha naval.</h1>
+
+		<%= if @enable_change_name do %>
+			<%= if @error do %>
+      	<p class="text-center mb-3 text-red-400"><%= @error %></p>
+			<% end %>
+
+			<form phx-target={@myself} phx-submit="change-player-name" class="mb-4">
+				<label for="player-name-input">Nome:</label>
+				<input id="player-name-input" phx-value="player-name" name="player-name" required class="text-white block mx-auto border my-2 border-gray-300 p-2 bg-transparent rounded-md outline-none text-center" value={@player_name} />
+				<button type="submit" class="font-bold cursor-pointer bg-none outline-none block mx-auto mb-3">Salvar</button>
+			</form>
+		<% else %>
+			<p>Nome: <%= @player_name %></p>
+			<button phx-click="enable-name-change" phx-target={@myself} type="submit" class="font-bold cursor-pointer bg-none outline-none block mx-auto mb-3">Alterar nome</button>
+		<% end %>
+
+		<div class="flex gap-4 justify-center flex-wrap mb-3">
+			<.btn click="multiplayer-choice" to="#home-component" class="text-white p-2 rounded bg-yellow-600 hover:bg-yellow-500 font-bold transition-all ease-linear">Jogar</.btn>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,45 @@
+<div class="flex flex-col items-center animate-fade-in" id="edit-component">
+	<h1 class="text-2xl font-bold">Posicione os seus navios no tabuleiro abaixo</h1>
+	<%= if @edit do %>
+	<p class="mt-4">Tamanho: <span class="text-green-400 font-bold"><%= @ship %></span></p>
+	<% else %>
+	<p class="mt-4">Você já está pronto para iniciar o jogo.</p>
+	<% end %>
+	
+	<p class="my-3">
+		Posição: <span class="text-green-400 font-bold"><%= String.capitalize(@axis) %></span>
+		<button phx-target={@myself} phx-click="change-axis" class="font-bold">Alterar</button>
+	</p>
+
+	<.live_component
+		id="edit-board"
+		module={BattleshipWeb.GameLive.BoardComponent}
+		gameboard={@gameboard}
+		enable_edit={@edit}
+		target={@myself}
+		show_ships={true}
+	/>
+
+	<%= if @error do %>
+		<p class="mb-3 text-red-400"><%= @error %></p>
+	<% end %>
+
+	<div class="flex gap-4">
+		<.btn
+			click="index"
+			to="#edit-component"
+			class="text-white p-2 rounded bg-red-600 hover:bg-red-500 font-bold transition-all ease-linear"
+		>
+			Voltar
+		</.btn>
+
+		<.btn
+			click="play"
+			to="#edit-component"
+			class="text-white p-2 rounded bg-green-600 hover:bg-green-500 font-bold transition-all ease-linear disabled:cursor-not-allowed disabled:bg-stone-700"
+			disabled={!@access_next_page}
+		>
+			Jogar
+		</.btn>
+	</div>
+</div>

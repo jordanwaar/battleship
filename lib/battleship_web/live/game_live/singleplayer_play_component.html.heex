@@ -1,0 +1,46 @@
+<div class="flex flex-col items-center flex-wrap animate-fade-in" id="play-component">
+	<h1 class="text-2xl font-bold">Play game!</h1>
+	<p class="text-sm text-center mt-4">You are playing against computer.</p>
+	<p class="text-sm text-center">Computer's ship placement won't be visible to you. You try to guess in which position your oppnent's ship is, and attack.</p>
+	<p class="text-sm text-center">You either hit or miss. Similarly, computer can attack you. One who first hits all the ships of the opposite player wins.</p>
+
+  <%= if @game_over do %>
+		<%= if @player.win do %>
+   		<p class="font-bold text-teal-400 my-3 text-xl"><%= @player.name %> won the game!</p>
+		<% else %>
+   		<p class="font-bold text-teal-400 my-3 text-xl"><%= @opponent.name %> won the game!</p>
+		<% end %>
+	<% else %>
+	 <p class="my-3">Chance: <span class="font-bold"><%= String.capitalize(@play_chance.name) %></span></p>
+  <% end %>
+
+	<div class="flex flex-col gap-4 justify-center md:flex-row md:gap-10">
+		<div>
+			<.live_component
+				id="player_board"
+				module={BattleshipWeb.GameLive.BoardComponent}
+				gameboard={@player.gameboard}
+				enable_edit={false}
+				target={@myself}
+				show_ships={true}
+			/>
+			<p class="text-center">Your board</p>
+		</div>
+		<div>
+			<.live_component
+				id="opponent_board"
+				module={BattleshipWeb.GameLive.BoardComponent}
+				gameboard={@opponent.gameboard}
+				enable_edit={@edit_opponent_board}
+				target={@myself}
+				show_ships={false}
+			/>
+			<p class="text-center">Opponent's board</p>
+		</div>
+	</div>
+
+	<div class="flex gap-4">
+		<.btn click="index" to="#play-component" class="mt-2 text-white p-2 rounded bg-teal-600 hover:bg-teal-500 font-bold transition-all ease-linear">End game</.btn>
+		<.btn click="play-again" to="#play-component" disabled={!@game_over} class="mt-2 text-white p-2 rounded bg-teal-600 hover:bg-teal-500 font-bold transition-all ease-linear disabled:cursor-not-allowed disabled:bg-stone-700">Play again</.btn>
+	</div>
+</div>

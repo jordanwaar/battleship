@@ -1,0 +1,50 @@
+<div class="flex flex-col items-center flex-wrap animate-fade-in" id="play-component">
+	<h1 class="text-2xl font-bold">Jogo iniciado!</h1>
+	<p class="text-sm text-center mt-4">Seu objetivo é afundar todos os navios inimigos.</p>
+	<p class="text-sm text-center">OBS: Ao acertar um navio inimigo, a posição deste no tabuleiro será marcada com a cor <span class="text-sm text-center bg-red-600">vermelha</span></p>
+
+	<%= if @game_over do %>
+		<%= if @player_left do %>
+			<p class="font-bold text-red-400"><%= @opponent.name %> saiu do jogo.</p>
+		<% else %>
+			<%= if @player.win do %>
+				<p>Que legal, você ganhou!</p>
+			<% else %>
+				<p>Que pena, você perdeu!</p>
+			<% end %>
+		<% end %>
+	<% else %>
+		<p>Jogando: <span class="font-bold"><%= if @player.chance, do: "#{@player.name} (Você)", else: "#{@opponent.name} (Oponente)" %></span></p>
+	<% end %>
+
+	<div class="flex flex-col gap-4 justify-center md:flex-row md:gap-10 mb-4">
+		<div>
+			<.live_component
+				id="player_board"
+				module={BattleshipWeb.GameLive.BoardComponent}
+				gameboard={@player.gameboard}
+				enable_edit={false}
+				target={@myself}
+				show_ships={true}
+			/>
+			<p class="text-center">Seu tabuleiro</p>
+		</div>
+		<div>
+			<.live_component
+				id="enemy_board"
+				module={BattleshipWeb.GameLive.BoardComponent}
+				gameboard={@opponent.gameboard}
+				enable_edit={@player.chance}
+				target={@myself}
+				show_ships={false}
+			/>
+			<p class="text-center">tabuleiro do oponente</p>
+		</div>
+	</div>
+
+
+	<div class="flex gap-4">
+		<.btn click="index" to="#play-component" class="mt-2 text-white p-2 rounded bg-teal-600 hover:bg-teal-500 font-bold transition-all ease-linear">Encerrar jogo</.btn>
+		<.btn click="play-again" to="#play-component" disabled={!@game_over} class="mt-2 text-white p-2 rounded bg-teal-600 hover:bg-teal-500 font-bold transition-all ease-linear disabled:cursor-not-allowed disabled:bg-stone-700">Jogar novamente</.btn>
+	</div>
+</div>
